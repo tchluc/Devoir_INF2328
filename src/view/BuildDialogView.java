@@ -1,4 +1,4 @@
-package view;
+package src.view;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,8 +12,8 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import model.PowerPlant;
-import model.PowerPlantType;
+import src.model.PowerPlant;
+import src.model.PowerPlantType;
 
 /**
  * Dialogue de construction de centrale.
@@ -84,8 +84,12 @@ public class BuildDialogView extends Dialog<PowerPlantType> {
         });
 
         try {
-            String cheminCSS = getClass().getResource("styles.css").toExternalForm();
-            panneauDialogue.getStylesheets().add(cheminCSS);
+            java.net.URL cssUrl = getClass().getResource("styles.css");
+            if (cssUrl != null) {
+                panneauDialogue.getStylesheets().add(cssUrl.toExternalForm());
+            } else {
+                System.err.println("Avertissement : styles.css non trouvé (BuildDialogView)");
+            }
         } catch (Exception e) {
             System.err.println("Impossible de charger styles.css: " + e.getMessage());
         }

@@ -1,4 +1,4 @@
-package view;
+package src.view;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -34,14 +34,7 @@ public class WelcomeView {
         Text sousTitre = new Text(">> SYSTEME DE GESTION ENERGETIQUE <<");
         sousTitre.getStyleClass().add("subtitle");
 
-        String texteDescription = "CONNEXION ETABLIE...\n"
-                + "ID: COMMANDANT NOVA-7\n"
-                + "STATUT: EN ATTENTE D'ORDRES\n\n"
-                + "MISSION:\n"
-                + "> Gérer la production d'énergie\n"
-                + "> Maintenir les systèmes vitaux\n"
-                + "> Assurer la survie de la population\n\n"
-                + "INITIALISATION DES SYSTEMES...";
+        String texteDescription = "CONNEXION ETABLIE...\n";
 
         Label labelDescription = new Label(texteDescription);
         labelDescription.setWrapText(true);
@@ -69,8 +62,16 @@ public class WelcomeView {
 
     public Scene createScene() {
         Scene scene = new Scene(root, 1200, 800);
-        String cheminCSS = getClass().getResource("styles.css").toExternalForm();
-        scene.getStylesheets().add(cheminCSS);
+        try {
+            java.net.URL cssUrl = getClass().getResource("styles.css");
+            if (cssUrl != null) {
+                scene.getStylesheets().add(cssUrl.toExternalForm());
+            } else {
+                System.err.println("Avertissement : styles.css non trouvé dans le package view.");
+            }
+        } catch (Exception e) {
+            System.err.println("Erreur lors du chargement du CSS : " + e.getMessage());
+        }
         return scene;
     }
 }

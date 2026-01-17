@@ -1,4 +1,4 @@
-package view;
+package src.view;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -7,17 +7,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import model.City;
-import model.GameState;
-import model.PowerPlant;
-import model.Residence;
+import src.model.City;
+import src.model.GameState;
+import src.model.PowerPlant;
+import src.model.Residence;
+
 
 import java.util.List;
 
@@ -48,8 +51,8 @@ public class MainGameView {
     private Label labelProduction;
     private Label labelDemande;
     private Label labelBalance;
-    private ListView<String> listeCentrales;
-    private ListView<String> listeResidences;
+    private FlowPane gridCentrales;
+    private FlowPane gridResidences;
 
     // Panneau bas (Logs)
     private TextArea zoneLog;
@@ -191,36 +194,53 @@ public class MainGameView {
     private HBox creerSectionBatiments() {
         HBox section = new HBox(20);
         section.setAlignment(Pos.TOP_CENTER);
+        VBox.setVgrow(section, Priority.ALWAYS); // Allow section to grow
 
         // Centrales
         VBox boiteCentrales = new VBox(8);
         boiteCentrales.setPadding(new Insets(12));
         boiteCentrales.getStyleClass().add("panel");
         boiteCentrales.setPrefWidth(450);
+        VBox.setVgrow(boiteCentrales, Priority.ALWAYS); // Grow vertical
 
         Label titreCentrales = new Label("CENTRALES");
         titreCentrales.getStyleClass().add("panel-header");
 
-        listeCentrales = new ListView<>();
-        listeCentrales.setPrefHeight(180);
-        listeCentrales.getStyleClass().add("list-view");
+        gridCentrales = new FlowPane();
+        gridCentrales.setHgap(10);
+        gridCentrales.setVgap(10);
+        gridCentrales.setPrefWrapLength(400); // Force wrapping
 
-        boiteCentrales.getChildren().addAll(titreCentrales, listeCentrales);
+        ScrollPane scrollCentrales = new ScrollPane(gridCentrales);
+        scrollCentrales.setFitToWidth(true);
+        scrollCentrales.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollCentrales.getStyleClass().add("scroll-pane");
+        VBox.setVgrow(scrollCentrales, Priority.ALWAYS);
+
+        boiteCentrales.getChildren().addAll(titreCentrales, scrollCentrales);
 
         // Residences
         VBox boiteResidences = new VBox(8);
         boiteResidences.setPadding(new Insets(12));
         boiteResidences.getStyleClass().add("panel");
         boiteResidences.setPrefWidth(450);
+        VBox.setVgrow(boiteResidences, Priority.ALWAYS);
 
         Label titreResidences = new Label("RÉSIDENCES");
         titreResidences.getStyleClass().add("panel-header");
 
-        listeResidences = new ListView<>();
-        listeResidences.setPrefHeight(180);
-        listeResidences.getStyleClass().add("list-view");
+        gridResidences = new FlowPane();
+        gridResidences.setHgap(10);
+        gridResidences.setVgap(10);
+        gridResidences.setPrefWrapLength(400);
 
-        boiteResidences.getChildren().addAll(titreResidences, listeResidences);
+        ScrollPane scrollResidences = new ScrollPane(gridResidences);
+        scrollResidences.setFitToWidth(true);
+        scrollResidences.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollResidences.getStyleClass().add("scroll-pane");
+        VBox.setVgrow(scrollResidences, Priority.ALWAYS);
+
+        boiteResidences.getChildren().addAll(titreResidences, scrollResidences);
 
         section.getChildren().addAll(boiteCentrales, boiteResidences);
         return section;
@@ -294,15 +314,56 @@ public class MainGameView {
                     "-fx-font-size: 16px; -fx-padding: 10px 0 0 0; -fx-text-fill: #ffffff; -fx-font-style: italic;");
         }
 
-        listeCentrales.getItems().clear();
+        gridCentrales.getChildren().clear();
         for (PowerPlant centrale : city.getPowerPlants()) {
-            listeCentrales.getItems().add(centrale.getType().getIcon() + " " + centrale.toString());
+            gridCentrales.getChildren().add(createPlantCard(centrale));
         }
 
-        listeResidences.getItems().clear();
-        for (Residence residence : city.getResidences()) {
-            listeResidences.getItems().add(residence.toString());
+        gridResidences.getChildren().clear();
+        List<Residence> residences = city.getResidences();
+        for (int i = 0; i < residences.size(); i++) {
+            gridResidences.getChildren().add(createResidenceCard(residences.get(i), i + 1));
         }
+    }
+
+    private VBox createPlantCard(PowerPlant plant) {
+        VBox card = new VBox(5);
+        card.getStyleClass().add("card");
+
+        Label header = new Label(plant.getType().getIcon() + " " + plant.getType().getName());
+        header.getStyleClass().add("card-header");
+
+        Label prodLabel = new Label("Prod: " + Math.round(plant.getProduction()) + " kW");
+        prodLabel.getStyleClass().add("card-stat");
+
+        // Status indicator (simple text color or icon)
+        Label statusLabel = new Label("ACTIF");
+        statusLabel.setStyle("-fx-text-fill: #00ff00; -fx-font-weight: bold; -fx-font-size: 10px;");
+
+        card.getChildren().addAll(header, prodLabel, statusLabel);
+        return card;
+    }
+
+    private VBox createResidenceCard(Residence residence, int index) {
+        VBox card = new VBox(5);
+        card.getStyleClass().add("card");
+
+        Label header = new Label("Résidence #" + index);
+        header.getStyleClass().add("card-header");
+
+        Label popLabel = new Label("Pop: " + residence.getInhabitants());
+        popLabel.getStyleClass().add("card-stat");
+
+        Label consoLabel = new Label("Besoin: " + Math.round(residence.getEnergyNeed()) + " kW");
+        consoLabel.getStyleClass().add("card-stat");
+
+        // Satisfaction bar
+        ProgressBar satBar = new ProgressBar(residence.getSatisfaction());
+        satBar.setPrefWidth(180);
+        satBar.getStyleClass().add("progress-bar");
+
+        card.getChildren().addAll(header, popLabel, consoLabel, satBar);
+        return card;
     }
 
     public void addLogs(List<String> logs) {
@@ -332,8 +393,8 @@ public class MainGameView {
         return boutonCycleSuivant;
     }
 
-    public ListView<String> getPowerPlantsList() {
-        return listeCentrales;
+    public FlowPane getPowerPlantsGrid() {
+        return gridCentrales;
     }
 
     public BorderPane getRoot() {
@@ -343,8 +404,12 @@ public class MainGameView {
     public Scene createScene() {
         Scene scene = new Scene(root, 1400, 850);
         try {
-            String cheminCSS = getClass().getResource("styles.css").toExternalForm();
-            scene.getStylesheets().add(cheminCSS);
+            java.net.URL cssUrl = getClass().getResource("styles.css");
+            if (cssUrl != null) {
+                scene.getStylesheets().add(cssUrl.toExternalForm());
+            } else {
+                System.err.println("Avertissement : styles.css non trouvé (MainGameView)");
+            }
         } catch (Exception e) {
             System.err.println("Impossible de charger styles.css: " + e.getMessage());
         }

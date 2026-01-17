@@ -1,10 +1,13 @@
-package controller;
+package src.controller;
 
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
-import model.*;
-import view.*;
+import src.model.*;
+import src.model.GameEngine;
+import src.view.GameApplication;
+import src.view.MainGameView;
+import src.view.*;
 
 import java.util.ArrayList;
 import java.util.List;

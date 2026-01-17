@@ -1,4 +1,4 @@
-package model;
+package src.model;
 
 /**
  * Types de centrales electriques disponibles.

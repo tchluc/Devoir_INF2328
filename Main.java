@@ -1,4 +1,4 @@
-import view.GameApplication;
+import src.view.GameApplication;
 
 /**
  * Point d'entree principal du jeu Colony Power.

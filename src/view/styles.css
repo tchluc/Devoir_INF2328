@@ -25,7 +25,7 @@
     -fx-font-size: 42px;
     -fx-font-weight: 900;
     -fx-fill: #ffffff;
-    -fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.3), 10, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(255, 255, 255, 0.3), 10, 0, 0, 0);
     -fx-letter-spacing: 2px;
 }
 
@@ -62,12 +62,12 @@
     -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-text-transform: uppercase;
-    
+
     -fx-border-color: #ffffff;
     -fx-border-width: 2px;
     -fx-border-radius: 0;
     -fx-background-radius: 0;
-    
+
     -fx-padding: 10px 20px;
     -fx-cursor: hand;
     -fx-alignment: CENTER;
@@ -78,7 +78,7 @@
     -fx-background-color: #ffffff;
     -fx-text-fill: #000000;
     -fx-border-color: #ffffff;
-    -fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.8), 10, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(255, 255, 255, 0.8), 10, 0, 0, 0);
 }
 
 .button:pressed {
@@ -93,9 +93,9 @@
 }
 
 .button-danger {
-    -fx-border-color: #ffffff; 
+    -fx-border-color: #ffffff;
     /* Dotted border for danger/quit to distinguish shape */
-    -fx-border-style: segments(5, 5); 
+    -fx-border-style: segments(5, 5);
 }
 
 .button-danger:hover {
@@ -168,13 +168,13 @@
 
 /* Helper classes for status logic (kept from logic, but styled monochrome/patterned) */
 .progress-bar-success .bar {
-    -fx-background-color: #ffffff; 
+    -fx-background-color: #ffffff;
 }
 
 .progress-bar-warning .bar {
     -fx-background-color: #aaaaaa;
     /* Striped effect */
-    -fx-background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(0,0,0,0.5) 5px, rgba(0,0,0,0.5) 10px);
+    -fx-background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(0, 0, 0, 0.5) 5px, rgba(0, 0, 0, 0.5) 10px);
 }
 
 .progress-bar-danger .bar {
@@ -206,12 +206,56 @@
     -fx-border-width: 0 0 1px 0;
 }
 
+/* =================================================================================
+ * CARDS (New Realistic UI)
+ * ================================================================================= */
+
+.card {
+    -fx-background-color: #050505;
+    -fx-border-color: #333333;
+    -fx-border-width: 1px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0, 0, 0);
+    -fx-min-width: 200px;
+    -fx-max-width: 200px;
+}
+
+.card:hover {
+    -fx-border-color: #ffffff;
+    -fx-background-color: #111111;
+    -fx-cursor: hand;
+}
+
+.card-header {
+    -fx-font-family: 'Consolas', 'Courier New', monospace;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #555555;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 0 0 5px 0;
+    -fx-margin: 0 0 5px 0;
+}
+
+.card-stat {
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: #aaaaaa;
+}
+
+.card-icon {
+    -fx-font-size: 24px;
+    -fx-alignment: CENTER;
+    -fx-padding: 5px;
+}
+
 .list-cell:empty {
     -fx-background-color: #000000;
     -fx-border-width: 0;
 }
 
-.list-cell:filled:selected, .list-cell:filled:hover {
+.list-cell:filled:selected,
+.list-cell:filled:hover {
     -fx-background-color: #222222;
     -fx-text-fill: #ffffff;
     -fx-border-color: #ffffff;
@@ -233,13 +277,16 @@
 }
 
 /* Scrollbars - minimal and blocky */
-.scroll-bar:vertical, .scroll-bar:horizontal {
+.scroll-bar:vertical,
+.scroll-bar:horizontal {
     -fx-background-color: #000000;
 }
+
 .scroll-bar .thumb {
     -fx-background-color: #333333;
     -fx-background-radius: 0;
 }
+
 .scroll-bar .thumb:hover {
     -fx-background-color: #ffffff;
 }
@@ -260,6 +307,7 @@
     -fx-border-color: #ffffff;
     -fx-border-width: 2px;
 }
+
 .dialog-pane .header-panel {
     -fx-background-color: #111111;
     -fx-border-color: #333333;

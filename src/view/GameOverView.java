@@ -1,4 +1,4 @@
-package view;
+package src.view;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -24,35 +24,35 @@ public class GameOverView {
     }
 
     private void creerVue() {
-        root = new VBox(25);
+        root = new VBox(30);
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(50));
         root.getStyleClass().add("game-root");
 
-        Text titre = new Text("⚠ MISSION TERMINÉE ⚠");
+        Text titre = new Text("/// MISSION TERMINEE ///");
         titre.getStyleClass().add("title");
-        titre.setStyle("-fx-fill: #ef4444;");
 
         labelRaison = new Label();
         labelRaison.setWrapText(true);
         labelRaison.setMaxWidth(700);
         labelRaison.setTextAlignment(TextAlignment.CENTER);
-        labelRaison.setStyle("-fx-font-size: 18px; -fx-text-fill: #f59e0b;");
+        // Using subtitle style for the reason to make it prominent but tech-y
+        labelRaison.getStyleClass().add("subtitle");
+        labelRaison.setStyle("-fx-fill: #ffffff; -fx-font-size: 18px;");
 
         labelStatistiques = new Label();
         labelStatistiques.setWrapText(true);
         labelStatistiques.setMaxWidth(700);
         labelStatistiques.setTextAlignment(TextAlignment.CENTER);
-        labelStatistiques.getStyleClass().add("label-secondary");
-        labelStatistiques.setStyle("-fx-font-size: 16px; -fx-line-spacing: 5px;");
+        labelStatistiques.getStyleClass().add("label-stat");
+        labelStatistiques.setStyle(
+                "-fx-font-size: 16px; -fx-line-spacing: 8px; -fx-border-color: #ffffff; -fx-border-style: dashed; -fx-padding: 20px;");
 
-        boutonNouvellePartie = new Button("🔄 NOUVELLE MISSION");
+        boutonNouvellePartie = new Button("[ RELANCER SIMULATION ]");
         boutonNouvellePartie.getStyleClass().add("button-primary");
-        boutonNouvellePartie.setStyle("-fx-font-size: 16px; -fx-padding: 12px 30px;");
 
-        boutonQuitter = new Button("❌ QUITTER");
+        boutonQuitter = new Button("[ DECONNEXION ]");
         boutonQuitter.getStyleClass().add("button-danger");
-        boutonQuitter.setStyle("-fx-font-size: 16px; -fx-padding: 12px 30px;");
 
         root.getChildren().addAll(titre, labelRaison, labelStatistiques, boutonNouvellePartie, boutonQuitter);
     }
@@ -60,11 +60,12 @@ public class GameOverView {
     public void setGameOverInfo(String reason, int cycles, int finalResources, double finalHappiness, int population) {
         labelRaison.setText(reason);
 
-        String stats = "RAPPORT FINAL\n\n"
-                + "Cycles survécus: " + cycles + "\n"
-                + "Ressources finales: " + finalResources + " crédits\n"
-                + "Bonheur final: " + Math.round(finalHappiness * 100) + "%\n"
-                + "Population: " + population + " habitants";
+        String stats = "RAPPORT FINAL\n"
+                + "--------------------------------\n"
+                + "CYCLES SURVECUS    : " + cycles + "\n"
+                + "CREDITS FINAUX     : " + finalResources + "\n"
+                + "BONHEUR POPULATION : " + Math.round(finalHappiness * 100) + "%\n"
+                + "CITOYENS           : " + population;
 
         labelStatistiques.setText(stats);
     }

@@ -1,9 +1,11 @@
-package view;
+package src.view;
 
-import controller.GameController;
+import src.controller.GameController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import src.view.GameOverView;
+import src.view.WelcomeView;
 
 /**
  * Application principale JavaFX.
@@ -27,7 +29,7 @@ public class GameApplication extends Application {
     }
 
     private void afficherEcranBienvenue() {
-        WelcomeView welcomeView = new WelcomeView();
+        src.view.WelcomeView welcomeView = new src.view.WelcomeView();
         welcomeView.getStartButton().setOnAction(e -> lancerJeu());
 
         Scene scene = welcomeView.createScene();
@@ -49,8 +51,12 @@ public class GameApplication extends Application {
         Scene scene = new Scene(gameOverView.getRoot(), 1200, 800);
 
         try {
-            String cheminCSS = getClass().getResource("styles.css").toExternalForm();
-            scene.getStylesheets().add(cheminCSS);
+            java.net.URL cssUrl = getClass().getResource("styles.css");
+            if (cssUrl != null) {
+                scene.getStylesheets().add(cssUrl.toExternalForm());
+            } else {
+                System.err.println("Avertissement : styles.css non trouvé (GameApplication)");
+            }
         } catch (Exception e) {
             System.err.println("Impossible de charger styles.css: " + e.getMessage());
         }
